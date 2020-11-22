@@ -31,37 +31,29 @@ test01ThereAreNoSalesWhenSalesSystemIsCreated
 
 	self assert: (salesSystem salesMadeTo: adaLovelace) isEmpty! !
 
-!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/22/2020 11:41:51'!
 test02CanQuerySalesByCustomer
-
-	| salesToAdaLovelace |
 
 	salesSystem := CoffeeShopSalesSystem new.
 
 	salesSystem registerSaleTo: adaLovelace of: self combo1.
 	
-	salesToAdaLovelace := salesSystem salesMadeTo: adaLovelace.
-	self assert: 1 equals: salesToAdaLovelace size.
-	self assert: 1 equals: (salesToAdaLovelace count: [ :aProduct | aProduct = self combo1 ])! !
+	self assertCustomer: adaLovelace wasSoldATotalOf: 1 ofWhich: 1 wereCombo: self combo1.
+	
+	
+	! !
 
-!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'JMB 11/17/2020 21:07:40'!
+!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/22/2020 11:41:45'!
 test03SalesAreDistinguishedByCustomer
-
-	| salesToAdaLovelace salesToAlanKay |
 
 	salesSystem := CoffeeShopSalesSystem new.
 
 	salesSystem registerSaleTo: adaLovelace of: self combo1.
 	salesSystem registerSaleTo: adaLovelace of: self combo1.
 	salesSystem registerSaleTo: alanKay of: self combo2.
-
-	salesToAdaLovelace := salesSystem salesMadeTo: adaLovelace.
-	self assert: 2 equals: salesToAdaLovelace size.
-	self assert: 2 equals: (salesToAdaLovelace count: [ :aProduct | aProduct = self combo1 ]).
-
-	salesToAlanKay := salesSystem salesMadeTo: alanKay.
-	self assert: 1 equals: salesToAlanKay size.
-	self assert: 1 equals: (salesToAlanKay  count: [ :aProduct | aProduct = self combo2 ])! !
+	
+	self assertCustomer: adaLovelace wasSoldATotalOf: 2 ofWhich: 2 wereCombo: self combo1.
+	self assertCustomer: alanKay wasSoldATotalOf: 1 ofWhich: 1 wereCombo: self combo2.! !
 
 
 !CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'LL 9/22/2020 21:41:51'!
@@ -125,11 +117,11 @@ test08NoRewardExpectedWhenCustomerHasNotBuyAnything
 	
 	self failWith: 'No reward expected when customer has not buy anything'! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:29:49'!
 test09GoldCustomerGetsRewardedWithOneCombo2With50PercentItsPriceWhenRule1Holds
 
 	| adaLovelaceReward |
-
+	
 	salesSystem := CoffeeShopSalesSystem new.
 
 	salesSystem registerSaleTo: adaLovelace of: self combo1.
@@ -137,12 +129,13 @@ test09GoldCustomerGetsRewardedWithOneCombo2With50PercentItsPriceWhenRule1Holds
 
 	adaLovelaceReward := salesSystem rewardOf: adaLovelace ifNone: [ self fail ].
 
-	self assert: 1 equals: adaLovelaceReward quantity.
-	self assert: adaLovelaceReward isForCombo2.
-	self assert: 60*peso equals: adaLovelaceReward price.
+	self assertCustomerReward: adaLovelaceReward 
+		containsAQuantityOf: 1 
+		forCombo: self combo2 
+		eachAtAPriceOf: 60*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:30:00'!
 test10SilverCustomerGetsRewardedWithOneCombo2With75PercentItsPriceWhenRule1Holds
 
 	| alaKayReward |
@@ -154,12 +147,13 @@ test10SilverCustomerGetsRewardedWithOneCombo2With75PercentItsPriceWhenRule1Holds
 
 	alaKayReward := salesSystem rewardOf: alanKay ifNone: [ self fail ].
 
-	self assert: 1 equals: alaKayReward quantity.
-	self assert: alaKayReward isForCombo2.
-	self assert: 120*3/4*peso equals: alaKayReward price.
+	self assertCustomerReward: alaKayReward 
+		containsAQuantityOf: 1 
+		forCombo: self combo2 
+		eachAtAPriceOf: 120*3/4*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:30:11'!
 test11NormalCustomerGetsRewardedWithOneCombo2With90PercentItsPriceWhenRule1Holds
 
 	| billGatesReward |
@@ -170,13 +164,14 @@ test11NormalCustomerGetsRewardedWithOneCombo2With90PercentItsPriceWhenRule1Holds
 	salesSystem registerSaleTo: billGates of: self combo2.
 
 	billGatesReward := salesSystem rewardOf: billGates ifNone: [ self fail ].
-
-	self assert: 1 equals: billGatesReward quantity.
-	self assert: billGatesReward isForCombo2.
-	self assert: 120*9/10*peso equals: billGatesReward price.
+	
+	self assertCustomerReward: billGatesReward 
+		containsAQuantityOf: 1 
+		forCombo: self combo2 
+		eachAtAPriceOf: 120*9/10*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:31:17'!
 test12GoldCustomerGetsRewardedWithOneCombo1At75PesosWhenRule2Holds
 
 	| adaLovelaceReward |
@@ -189,12 +184,13 @@ test12GoldCustomerGetsRewardedWithOneCombo1At75PesosWhenRule2Holds
 
 	adaLovelaceReward := salesSystem rewardOf: adaLovelace ifNone: [ self fail ].
 
-	self assert: 2 equals: adaLovelaceReward quantity.
-	self assert: adaLovelaceReward isForCombo1.
-	self assert: 75*peso equals: adaLovelaceReward price.
+	self assertCustomerReward: adaLovelaceReward 
+		containsAQuantityOf: 2 
+		forCombo: self combo1 
+		eachAtAPriceOf: 75*peso
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:31:57'!
 test13SilverCustomerGetsRewardedWithOneCombo1At83PesosWhenRule2Holds
 
 	| alanKayReward |
@@ -207,12 +203,13 @@ test13SilverCustomerGetsRewardedWithOneCombo1At83PesosWhenRule2Holds
 
 	alanKayReward := salesSystem rewardOf: alanKay ifNone: [ self fail ].
 
-	self assert: 2 equals: alanKayReward quantity.
-	self assert: alanKayReward isForCombo1.
-	self assert: 83*peso equals: alanKayReward price.
+	self assertCustomerReward: alanKayReward 
+		containsAQuantityOf: 2 
+		forCombo: self combo1 
+		eachAtAPriceOf: 83*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'LL 9/22/2020 21:41:51'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 12:32:33'!
 test14NormalCustomerGetsRewardedWithOneCombo1At97PesosWhenRule2Holds
 
 	| billGatesReward |
@@ -225,10 +222,31 @@ test14NormalCustomerGetsRewardedWithOneCombo1At97PesosWhenRule2Holds
 
 	billGatesReward := salesSystem rewardOf: billGates ifNone: [ self fail ].
 
-	self assert: 2 equals: billGatesReward quantity.
-	self assert: billGatesReward isForCombo1.
-	self assert: 97*peso equals: billGatesReward price.
+	self assertCustomerReward: billGatesReward 
+		containsAQuantityOf: 2 
+		forCombo: self combo1 
+		eachAtAPriceOf: 97*peso.
 ! !
+
+
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 11:38:44'!
+assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfCombosSold ofWhich: numberOfCombosOfTypeSold wereCombo: typeOfCombo
+
+	| salesToCustomer |
+	
+	salesToCustomer := salesSystem salesMadeTo: aCustomer.
+	
+	self assert: aTotalNumberOfCombosSold equals: salesToCustomer size.
+	self assert: numberOfCombosOfTypeSold equals: (salesToCustomer count: [ :aProduct | aProduct = typeOfCombo ]).! !
+
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 12:17:33'!
+assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forCombo: rewardedCombo eachAtAPriceOf: rewardedPrice
+	
+	self assert: rewardedQuantity equals: aCustomerReward quantity.
+	rewardedCombo = self combo1 ifTrue: [self assert: aCustomerReward isForCombo1].
+	rewardedCombo = self combo2 ifTrue: [self assert: aCustomerReward isForCombo2].
+	"self assert: aCustomerReward isForComboY."
+	self assert: rewardedPrice equals: aCustomerReward price.! !
 
 
 !classDefinition: #CoffeeShopCustomer category: 'AlgoIII-2020-2C-1Parcial'!
