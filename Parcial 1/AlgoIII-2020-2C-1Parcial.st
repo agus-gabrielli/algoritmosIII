@@ -206,11 +206,11 @@ assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfCombosSold ofWhich: num
 	self assert: aTotalNumberOfCombosSold equals: salesToCustomer size.
 	self assert: numberOfCombosOfTypeSold equals: (salesToCustomer count: [ :aProduct | aProduct = typeOfCombo ]).! !
 
-!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 15:16:20'!
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 15:42:37'!
 assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forCombo: rewardedCombo eachAtAPriceOf: rewardedPrice
 	
 	self assert: rewardedQuantity equals: aCustomerReward quantity.
-	rewardedCombo assertItIsIncorporatedIn: aCustomerReward.
+	self assert: (rewardedCombo isRewardedIn: aCustomerReward).
 	self assert: rewardedPrice equals: aCustomerReward price.! !
 
 
@@ -260,13 +260,13 @@ Object subclass: #CoffeeShopProducts
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:52'!
-assertItIsIncorporatedIn: aCustomerReward
+!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 14:29:26'!
+initialize 
 
 	^self subclassResponsibility ! !
 
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 14:29:26'!
-initialize 
+!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:00'!
+isRewardedIn: aCustomerReward
 
 	^self subclassResponsibility ! !
 
@@ -295,10 +295,10 @@ initialize
 	volume := 250*milliliter.! !
 
 
-!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:05'!
-assertItIsIncorporatedIn: aCustomerReward
+!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:12'!
+isRewardedIn: aCustomerReward
 
-	self assert: aCustomerReward isForCombo1.! !
+	^aCustomerReward isForCombo: self.! !
 
 !Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:58:46'!
 price
@@ -318,10 +318,10 @@ CoffeeShopProducts subclass: #Combo2
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:05'!
-assertItIsIncorporatedIn: aCustomerReward
+!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:22'!
+isRewardedIn: aCustomerReward
 
-	self assert: aCustomerReward isForCombo2.! !
+	^aCustomerReward isForCombo: self.! !
 
 !Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:59:05'!
 price
@@ -368,15 +368,10 @@ initializeOf: aProduct at: aPrice quantity: aQuantity
 	! !
 
 
-!CoffeeShopReward methodsFor: 'testing' stamp: 'AG 11/22/2020 13:09:07'!
-isForCombo1
-	
-	^product isKindOf: Combo1 ! !
+!CoffeeShopReward methodsFor: 'testing' stamp: 'AG 11/22/2020 15:37:24'!
+isForCombo: aCombo
 
-!CoffeeShopReward methodsFor: 'testing' stamp: 'AG 11/22/2020 13:09:18'!
-isForCombo2
-	
-	^product isKindOf: Combo2! !
+	^product isKindOf: aCombo class.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
