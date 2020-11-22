@@ -206,13 +206,11 @@ assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfCombosSold ofWhich: num
 	self assert: aTotalNumberOfCombosSold equals: salesToCustomer size.
 	self assert: numberOfCombosOfTypeSold equals: (salesToCustomer count: [ :aProduct | aProduct = typeOfCombo ]).! !
 
-!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 14:51:23'!
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 15:16:20'!
 assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forCombo: rewardedCombo eachAtAPriceOf: rewardedPrice
 	
 	self assert: rewardedQuantity equals: aCustomerReward quantity.
-	rewardedCombo = combo1 ifTrue: [self assert: aCustomerReward isForCombo1].
-	rewardedCombo = combo2 ifTrue: [self assert: aCustomerReward isForCombo2].
-	"self assert: aCustomerReward isForComboY."
+	rewardedCombo assertItIsIncorporatedIn: aCustomerReward.
 	self assert: rewardedPrice equals: aCustomerReward price.! !
 
 
@@ -262,6 +260,11 @@ Object subclass: #CoffeeShopProducts
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
+!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:52'!
+assertItIsIncorporatedIn: aCustomerReward
+
+	^self subclassResponsibility ! !
+
 !CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 14:29:26'!
 initialize 
 
@@ -292,6 +295,11 @@ initialize
 	volume := 250*milliliter.! !
 
 
+!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:05'!
+assertItIsIncorporatedIn: aCustomerReward
+
+	self assert: aCustomerReward isForCombo1.! !
+
 !Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:58:46'!
 price
 
@@ -309,6 +317,11 @@ CoffeeShopProducts subclass: #Combo2
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
+
+!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:15:05'!
+assertItIsIncorporatedIn: aCustomerReward
+
+	self assert: aCustomerReward isForCombo2.! !
 
 !Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:59:05'!
 price
