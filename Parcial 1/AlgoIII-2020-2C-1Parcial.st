@@ -96,7 +96,7 @@ test08NoRewardExpectedWhenCustomerHasNotBuyAnything
 	
 	self failWith: 'No reward expected when customer has not buy anything'! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:42:22'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:05'!
 test09GoldCustomerGetsRewardedWithOneCombo2With50PercentItsPriceWhenRule1Holds
 
 	| adaLovelaceReward |
@@ -108,11 +108,11 @@ test09GoldCustomerGetsRewardedWithOneCombo2With50PercentItsPriceWhenRule1Holds
 
 	self assertCustomerReward: adaLovelaceReward 
 		containsAQuantityOf: 1 
-		forProduct: aCombo2 
+		ofProduct: aCombo2 
 		eachAtAPriceOf: 60*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:44:07'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:05'!
 test10SilverCustomerGetsRewardedWithOneCombo2With75PercentItsPriceWhenRule1Holds
 
 	| alaKayReward |
@@ -124,11 +124,11 @@ test10SilverCustomerGetsRewardedWithOneCombo2With75PercentItsPriceWhenRule1Holds
 
 	self assertCustomerReward: alaKayReward 
 		containsAQuantityOf: 1 
-		forProduct: aCombo2 
+		ofProduct: aCombo2 
 		eachAtAPriceOf: 120*3/4*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:59'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:05'!
 test11NormalCustomerGetsRewardedWithOneCombo2With90PercentItsPriceWhenRule1Holds
 
 	| billGatesReward |
@@ -140,11 +140,11 @@ test11NormalCustomerGetsRewardedWithOneCombo2With90PercentItsPriceWhenRule1Holds
 	
 	self assertCustomerReward: billGatesReward 
 		containsAQuantityOf: 1 
-		forProduct: aCombo2 
+		ofProduct: aCombo2 
 		eachAtAPriceOf: 120*9/10*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:48'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:05'!
 test12GoldCustomerGetsRewardedWithOneCombo1At75PesosWhenRule2Holds
 
 	| adaLovelaceReward |
@@ -157,11 +157,11 @@ test12GoldCustomerGetsRewardedWithOneCombo1At75PesosWhenRule2Holds
 
 	self assertCustomerReward: adaLovelaceReward 
 		containsAQuantityOf: 2 
-		forProduct: aCombo1 
+		ofProduct: aCombo1 
 		eachAtAPriceOf: 75*peso
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:39'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:06'!
 test13SilverCustomerGetsRewardedWithOneCombo1At83PesosWhenRule2Holds
 
 	| alanKayReward |
@@ -174,11 +174,11 @@ test13SilverCustomerGetsRewardedWithOneCombo1At83PesosWhenRule2Holds
 
 	self assertCustomerReward: alanKayReward 
 		containsAQuantityOf: 2 
-		forProduct: aCombo1 
+		ofProduct: aCombo1 
 		eachAtAPriceOf: 83*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:30'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 17:43:06'!
 test14NormalCustomerGetsRewardedWithOneCombo1At97PesosWhenRule2Holds
 
 	| billGatesReward |
@@ -191,7 +191,7 @@ test14NormalCustomerGetsRewardedWithOneCombo1At97PesosWhenRule2Holds
 
 	self assertCustomerReward: billGatesReward 
 		containsAQuantityOf: 2 
-		forProduct: aCombo1 
+		ofProduct: aCombo1 
 		eachAtAPriceOf: 97*peso.
 ! !
 
@@ -206,8 +206,8 @@ assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfProductsSold ofWhich: n
 	self assert: aTotalNumberOfProductsSold equals: salesToCustomer size.
 	self assert: numberOfSpecificProductsSold equals: (salesToCustomer count: [ :aProduct | aProduct = aProductType ]).! !
 
-!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/23/2020 08:42:58'!
-assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forProduct: rewardedProduct eachAtAPriceOf: rewardedPrice
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/23/2020 17:43:05'!
+assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity ofProduct: rewardedProduct eachAtAPriceOf: rewardedPrice
 	
 	self assert: rewardedQuantity equals: aCustomerReward quantity.
 	self assert: (rewardedProduct isRewardedIn: aCustomerReward).
