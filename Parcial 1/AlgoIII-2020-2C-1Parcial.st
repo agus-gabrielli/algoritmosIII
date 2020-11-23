@@ -1,21 +1,21 @@
 !classDefinition: #CoffeeShopTest category: 'AlgoIII-2020-2C-1Parcial'!
 TestCase subclass: #CoffeeShopTest
-	instanceVariableNames: 'billGates adaLovelace alanKay salesSystem combo1 combo2'
+	instanceVariableNames: 'billGates adaLovelace alanKay salesSystem aCombo1 aCombo2'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!CoffeeShopTest methodsFor: 'setUp/tearDown' stamp: 'AG 11/22/2020 14:47:12'!
+!CoffeeShopTest methodsFor: 'setUp/tearDown' stamp: 'AG 11/23/2020 08:28:13'!
 setUp
 
-	adaLovelace := CoffeeShopCustomer named: 'Ada Lovelace' ofType: #Gold.
-	alanKay := CoffeeShopCustomer named: 'Alan Kay' ofType: #Silver.
-	billGates := CoffeeShopCustomer named: 'Bill Gates' ofType: #Normal.
+	adaLovelace := GoldCustomer named: 'Ada Lovelace'.
+	alanKay := SilverCustomer named: 'Alan Kay'.
+	billGates := NormalCustomer named: 'Bill Gates'.
 	
 	salesSystem := CoffeeShopSalesSystem new.
 	
-	combo1 := Combo1 new.
-	combo2 := Combo2 new. 
+	aCombo1 := Combo1 new.
+	aCombo2 := Combo2 new. 
 ! !
 
 
@@ -24,25 +24,25 @@ test01ThereAreNoSalesWhenSalesSystemIsCreated
 
 	self assert: (salesSystem salesMadeTo: adaLovelace) isEmpty! !
 
-!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/22/2020 14:47:45'!
+!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/23/2020 08:40:40'!
 test02CanQuerySalesByCustomer
 
-	salesSystem registerSaleTo: adaLovelace of: combo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
 	
-	self assertCustomer: adaLovelace wasSoldATotalOf: 1 ofWhich: 1 wereCombo: combo1.
+	self assertCustomer: adaLovelace wasSoldATotalOf: 1 ofWhich: 1 were: aCombo1.
 	
 	
 	! !
 
-!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/22/2020 14:48:23'!
+!CoffeeShopTest methodsFor: 'tests - sales' stamp: 'AG 11/23/2020 08:40:40'!
 test03SalesAreDistinguishedByCustomer
 
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: alanKay of: combo2.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: alanKay of: aCombo2.
 	
-	self assertCustomer: adaLovelace wasSoldATotalOf: 2 ofWhich: 2 wereCombo: combo1.
-	self assertCustomer: alanKay wasSoldATotalOf: 1 ofWhich: 1 wereCombo: combo2.! !
+	self assertCustomer: adaLovelace wasSoldATotalOf: 2 ofWhich: 2 were: aCombo1.
+	self assertCustomer: alanKay wasSoldATotalOf: 1 ofWhich: 1 were: aCombo2.! !
 
 
 !CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/22/2020 12:44:22'!
@@ -54,35 +54,35 @@ test04VolumeSoldToCustomerIsZeroWhenCustomerHasNoSaleRegistered
 
 	self assert: 0*milliliter equals: volumeSoldToCustomer! !
 
-!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/22/2020 14:48:48'!
+!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/23/2020 08:34:57'!
 test05VolumeIs_250_WhenOnlyCombo1WasSoldToCustomer
 
 	| volumeSoldToCustomer |
 
-	salesSystem registerSaleTo: adaLovelace of: combo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
 
 	volumeSoldToCustomer := salesSystem volumeSoldTo: adaLovelace.
 
 	self assert: 250*milliliter equals: volumeSoldToCustomer ! !
 
-!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/22/2020 14:48:59'!
+!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/23/2020 08:35:02'!
 test06VolumeIs_100_WhenOnlyCombo2WasSoldToCustomer
 
 	| volumeSoldToCustomer |
 
-	salesSystem registerSaleTo: adaLovelace of: combo2.
+	salesSystem registerSaleTo: adaLovelace of: aCombo2.
 
 	volumeSoldToCustomer := salesSystem volumeSoldTo: adaLovelace.
 
 	self assert: 100*milliliter equals: volumeSoldToCustomer ! !
 
-!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/22/2020 14:49:08'!
+!CoffeeShopTest methodsFor: 'tests - volume sold' stamp: 'AG 11/23/2020 08:35:10'!
 test07VolumeSoldToCustomerIsTheSumOfAllSoldProducts
 
 	| volumeSoldToCustomer |
 
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: adaLovelace of: combo2.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo2.
 
 	volumeSoldToCustomer := salesSystem volumeSoldTo: adaLovelace.
 
@@ -96,142 +96,136 @@ test08NoRewardExpectedWhenCustomerHasNotBuyAnything
 	
 	self failWith: 'No reward expected when customer has not buy anything'! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:49:31'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:42:22'!
 test09GoldCustomerGetsRewardedWithOneCombo2With50PercentItsPriceWhenRule1Holds
 
 	| adaLovelaceReward |
 	
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: adaLovelace of: combo2.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo2.
 
 	adaLovelaceReward := salesSystem rewardOf: adaLovelace ifNone: [ self fail ].
 
 	self assertCustomerReward: adaLovelaceReward 
 		containsAQuantityOf: 1 
-		forCombo: combo2 
+		forProduct: aCombo2 
 		eachAtAPriceOf: 60*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:49:47'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:44:07'!
 test10SilverCustomerGetsRewardedWithOneCombo2With75PercentItsPriceWhenRule1Holds
 
 	| alaKayReward |
 
-	salesSystem registerSaleTo: alanKay of: combo1.
-	salesSystem registerSaleTo: alanKay of: combo2.
+	salesSystem registerSaleTo: alanKay of: aCombo1.
+	salesSystem registerSaleTo: alanKay of: aCombo2.
 
 	alaKayReward := salesSystem rewardOf: alanKay ifNone: [ self fail ].
 
 	self assertCustomerReward: alaKayReward 
 		containsAQuantityOf: 1 
-		forCombo: combo2 
+		forProduct: aCombo2 
 		eachAtAPriceOf: 120*3/4*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:50:02'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:59'!
 test11NormalCustomerGetsRewardedWithOneCombo2With90PercentItsPriceWhenRule1Holds
 
 	| billGatesReward |
 
-	salesSystem registerSaleTo: billGates of: combo1.
-	salesSystem registerSaleTo: billGates of: combo2.
+	salesSystem registerSaleTo: billGates of: aCombo1.
+	salesSystem registerSaleTo: billGates of: aCombo2.
 
 	billGatesReward := salesSystem rewardOf: billGates ifNone: [ self fail ].
 	
 	self assertCustomerReward: billGatesReward 
 		containsAQuantityOf: 1 
-		forCombo: combo2 
+		forProduct: aCombo2 
 		eachAtAPriceOf: 120*9/10*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:50:16'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:48'!
 test12GoldCustomerGetsRewardedWithOneCombo1At75PesosWhenRule2Holds
 
 	| adaLovelaceReward |
 
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: adaLovelace of: combo1.
-	salesSystem registerSaleTo: adaLovelace of: combo2.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo1.
+	salesSystem registerSaleTo: adaLovelace of: aCombo2.
 
 	adaLovelaceReward := salesSystem rewardOf: adaLovelace ifNone: [ self fail ].
 
 	self assertCustomerReward: adaLovelaceReward 
 		containsAQuantityOf: 2 
-		forCombo: combo1 
+		forProduct: aCombo1 
 		eachAtAPriceOf: 75*peso
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:50:29'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:39'!
 test13SilverCustomerGetsRewardedWithOneCombo1At83PesosWhenRule2Holds
 
 	| alanKayReward |
 
-	salesSystem registerSaleTo: alanKay of: combo1.
-	salesSystem registerSaleTo: alanKay of: combo1.
-	salesSystem registerSaleTo: alanKay of: combo2.
+	salesSystem registerSaleTo: alanKay of: aCombo1.
+	salesSystem registerSaleTo: alanKay of: aCombo1.
+	salesSystem registerSaleTo: alanKay of: aCombo2.
 
 	alanKayReward := salesSystem rewardOf: alanKay ifNone: [ self fail ].
 
 	self assertCustomerReward: alanKayReward 
 		containsAQuantityOf: 2 
-		forCombo: combo1 
+		forProduct: aCombo1 
 		eachAtAPriceOf: 83*peso.
 ! !
 
-!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/22/2020 14:50:40'!
+!CoffeeShopTest methodsFor: 'tests - rewards' stamp: 'AG 11/23/2020 08:43:30'!
 test14NormalCustomerGetsRewardedWithOneCombo1At97PesosWhenRule2Holds
 
 	| billGatesReward |
 
-	salesSystem registerSaleTo: billGates of: combo1.
-	salesSystem registerSaleTo: billGates of: combo1.
-	salesSystem registerSaleTo: billGates of: combo2.
+	salesSystem registerSaleTo: billGates of: aCombo1.
+	salesSystem registerSaleTo: billGates of: aCombo1.
+	salesSystem registerSaleTo: billGates of: aCombo2.
 
 	billGatesReward := salesSystem rewardOf: billGates ifNone: [ self fail ].
 
 	self assertCustomerReward: billGatesReward 
 		containsAQuantityOf: 2 
-		forCombo: combo1 
+		forProduct: aCombo1 
 		eachAtAPriceOf: 97*peso.
 ! !
 
 
-!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 11:38:44'!
-assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfCombosSold ofWhich: numberOfCombosOfTypeSold wereCombo: typeOfCombo
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/23/2020 08:41:39'!
+assertCustomer: aCustomer wasSoldATotalOf: aTotalNumberOfProductsSold ofWhich: numberOfSpecificProductsSold were: aProductType
 
 	| salesToCustomer |
 	
 	salesToCustomer := salesSystem salesMadeTo: aCustomer.
 	
-	self assert: aTotalNumberOfCombosSold equals: salesToCustomer size.
-	self assert: numberOfCombosOfTypeSold equals: (salesToCustomer count: [ :aProduct | aProduct = typeOfCombo ]).! !
+	self assert: aTotalNumberOfProductsSold equals: salesToCustomer size.
+	self assert: numberOfSpecificProductsSold equals: (salesToCustomer count: [ :aProduct | aProduct = aProductType ]).! !
 
-!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/22/2020 15:42:37'!
-assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forCombo: rewardedCombo eachAtAPriceOf: rewardedPrice
+!CoffeeShopTest methodsFor: 'assertions' stamp: 'AG 11/23/2020 08:42:58'!
+assertCustomerReward: aCustomerReward containsAQuantityOf: rewardedQuantity forProduct: rewardedProduct eachAtAPriceOf: rewardedPrice
 	
 	self assert: rewardedQuantity equals: aCustomerReward quantity.
-	self assert: (rewardedCombo isRewardedIn: aCustomerReward).
+	self assert: (rewardedProduct isRewardedIn: aCustomerReward).
 	self assert: rewardedPrice equals: aCustomerReward price.! !
 
 
 !classDefinition: #CoffeeShopCustomer category: 'AlgoIII-2020-2C-1Parcial'!
 Object subclass: #CoffeeShopCustomer
-	instanceVariableNames: 'name type'
+	instanceVariableNames: 'name'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!CoffeeShopCustomer methodsFor: 'type' stamp: 'LL 9/21/2020 13:05:10'!
-type
-
-	^type! !
-
-
-!CoffeeShopCustomer methodsFor: 'initialization' stamp: 'LL 9/21/2020 13:00:45'!
-initializeNamed: aName ofType: aType
+!CoffeeShopCustomer methodsFor: 'initialization' stamp: 'AG 11/22/2020 16:28:20'!
+initializeNamed: aName
 
 	name := aName.
-	type := aType ! !
+! !
 
 
 !CoffeeShopCustomer methodsFor: 'printing' stamp: 'LL 9/22/2020 18:57:07'!
@@ -241,16 +235,82 @@ printOn: aStream
 		nextPutAll: 'Customer named ';
 		nextPutAll: name! !
 
+
+!CoffeeShopCustomer methodsFor: 'reward prices' stamp: 'AG 11/23/2020 09:23:21'!
+rewardPriceForCombo1
+
+	^self subclassResponsibility ! !
+
+!CoffeeShopCustomer methodsFor: 'reward prices' stamp: 'AG 11/23/2020 09:23:39'!
+rewardPriceForCombo2: aCombo2
+
+	^self subclassResponsibility ! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'CoffeeShopCustomer class' category: 'AlgoIII-2020-2C-1Parcial'!
 CoffeeShopCustomer class
 	instanceVariableNames: ''!
 
-!CoffeeShopCustomer class methodsFor: 'instance creation' stamp: 'LL 9/21/2020 13:00:21'!
-named: aName ofType: aType
+!CoffeeShopCustomer class methodsFor: 'instance creation' stamp: 'AG 11/22/2020 16:27:58'!
+named: aName
 
-	^self new initializeNamed: aName ofType: aType! !
+	^self new initializeNamed: aName
+	! !
+
+
+!classDefinition: #GoldCustomer category: 'AlgoIII-2020-2C-1Parcial'!
+CoffeeShopCustomer subclass: #GoldCustomer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'AlgoIII-2020-2C-1Parcial'!
+
+!GoldCustomer methodsFor: 'reward prices' stamp: 'AG 11/22/2020 16:17:32'!
+rewardPriceForCombo1
+	
+	^75*peso! !
+
+!GoldCustomer methodsFor: 'reward prices' stamp: 'AG 11/23/2020 09:25:03'!
+rewardPriceForCombo2: aCombo2
+	
+	^aCombo2 price / 2! !
+
+
+!classDefinition: #NormalCustomer category: 'AlgoIII-2020-2C-1Parcial'!
+CoffeeShopCustomer subclass: #NormalCustomer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'AlgoIII-2020-2C-1Parcial'!
+
+!NormalCustomer methodsFor: 'reward prices' stamp: 'AG 11/22/2020 16:18:15'!
+rewardPriceForCombo1
+	
+	^97*peso! !
+
+!NormalCustomer methodsFor: 'reward prices' stamp: 'AG 11/23/2020 09:24:50'!
+rewardPriceForCombo2: aCombo2
+	
+	^aCombo2 price * 9 / 10! !
+
+
+!classDefinition: #SilverCustomer category: 'AlgoIII-2020-2C-1Parcial'!
+CoffeeShopCustomer subclass: #SilverCustomer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'AlgoIII-2020-2C-1Parcial'!
+
+!SilverCustomer methodsFor: 'reward prices' stamp: 'AG 11/22/2020 16:18:21'!
+rewardPriceForCombo1
+	
+	^83*peso! !
+
+!SilverCustomer methodsFor: 'reward prices' stamp: 'AG 11/23/2020 09:24:27'!
+rewardPriceForCombo2: aCombo2
+	
+	^aCombo2 price * 3 / 4! !
 
 
 !classDefinition: #CoffeeShopProducts category: 'AlgoIII-2020-2C-1Parcial'!
@@ -260,25 +320,27 @@ Object subclass: #CoffeeShopProducts
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 14:29:26'!
-initialize 
-
-	^self subclassResponsibility ! !
-
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:00'!
-isRewardedIn: aCustomerReward
-
-	^self subclassResponsibility ! !
-
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 14:29:02'!
+!CoffeeShopProducts methodsFor: 'accessing' stamp: 'AG 11/22/2020 14:29:02'!
 price 
 
 	^self subclassResponsibility ! !
 
-!CoffeeShopProducts methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:55:44'!
+!CoffeeShopProducts methodsFor: 'accessing' stamp: 'AG 11/22/2020 12:55:44'!
 volume
 
 	self subclassResponsibility ! !
+
+
+!CoffeeShopProducts methodsFor: 'initialization' stamp: 'AG 11/22/2020 14:29:26'!
+initialize 
+
+	^self subclassResponsibility ! !
+
+
+!CoffeeShopProducts methodsFor: 'rewarding system' stamp: 'AG 11/22/2020 15:39:00'!
+isRewardedIn: aCustomerReward
+
+	^self subclassResponsibility ! !
 
 
 !classDefinition: #Combo1 category: 'AlgoIII-2020-2C-1Parcial'!
@@ -288,6 +350,17 @@ CoffeeShopProducts subclass: #Combo1
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
+!Combo1 methodsFor: 'accessing' stamp: 'AG 11/22/2020 12:58:46'!
+price
+
+	^price! !
+
+!Combo1 methodsFor: 'accessing' stamp: 'AG 11/22/2020 13:02:55'!
+volume
+	
+	^volume! !
+
+
 !Combo1 methodsFor: 'initialization' stamp: 'AG 11/22/2020 14:30:42'!
 initialize
 	
@@ -295,20 +368,10 @@ initialize
 	volume := 250*milliliter.! !
 
 
-!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:12'!
+!Combo1 methodsFor: 'rewarding system' stamp: 'AG 11/23/2020 09:38:12'!
 isRewardedIn: aCustomerReward
 
-	^aCustomerReward isForCombo: self.! !
-
-!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:58:46'!
-price
-
-	^price! !
-
-!Combo1 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 13:02:55'!
-volume
-	
-	^volume! !
+	^aCustomerReward isForProduct: self.! !
 
 
 !classDefinition: #Combo2 category: 'AlgoIII-2020-2C-1Parcial'!
@@ -318,27 +381,28 @@ CoffeeShopProducts subclass: #Combo2
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 15:39:22'!
-isRewardedIn: aCustomerReward
-
-	^aCustomerReward isForCombo: self.! !
-
-!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 12:59:05'!
-price
-	
-	^price! !
-
-!Combo2 methodsFor: 'as yet unclassified' stamp: 'AG 11/22/2020 13:02:45'!
-volume
-
-	^volume! !
-
-
 !Combo2 methodsFor: 'initialization' stamp: 'AG 11/22/2020 14:30:52'!
 initialize
 	
 	price := 120*peso.
 	volume := 100*milliliter.! !
+
+
+!Combo2 methodsFor: 'accessing' stamp: 'AG 11/22/2020 12:59:05'!
+price
+	
+	^price! !
+
+!Combo2 methodsFor: 'accessing' stamp: 'AG 11/22/2020 13:02:45'!
+volume
+
+	^volume! !
+
+
+!Combo2 methodsFor: 'rewarding system' stamp: 'AG 11/23/2020 09:38:12'!
+isRewardedIn: aCustomerReward
+
+	^aCustomerReward isForProduct: self.! !
 
 
 !classDefinition: #CoffeeShopReward category: 'AlgoIII-2020-2C-1Parcial'!
@@ -368,10 +432,10 @@ initializeOf: aProduct at: aPrice quantity: aQuantity
 	! !
 
 
-!CoffeeShopReward methodsFor: 'testing' stamp: 'AG 11/22/2020 15:37:24'!
-isForCombo: aCombo
+!CoffeeShopReward methodsFor: 'testing' stamp: 'AG 11/23/2020 09:38:29'!
+isForProduct: aProduct
 
-	^product isKindOf: aCombo class.! !
+	^product isKindOf: aProduct class.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -379,10 +443,10 @@ isForCombo: aCombo
 CoffeeShopReward class
 	instanceVariableNames: ''!
 
-!CoffeeShopReward class methodsFor: 'instance creation' stamp: 'LL 9/20/2020 17:53:14'!
-of: aComboType at: aPrice quantity: aQuantity
+!CoffeeShopReward class methodsFor: 'instance creation' stamp: 'AG 11/23/2020 09:37:36'!
+of: aProductType at: aPrice quantity: aQuantity
 
-	^self new initializeOf: aComboType at: aPrice quantity: aQuantity
+	^self new initializeOf: aProductType at: aPrice quantity: aQuantity
 ! !
 
 
@@ -392,13 +456,6 @@ Object subclass: #CoffeeShopSalesSystem
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
-
-!CoffeeShopSalesSystem methodsFor: 'product volume' stamp: 'AG 11/22/2020 12:55:02'!
-volumeOf: aProduct
-
-	^aProduct volume
-	! !
-
 
 !CoffeeShopSalesSystem methodsFor: 'initialization' stamp: 'LL 9/20/2020 17:17:34'!
 initialize
@@ -419,10 +476,10 @@ salesMadeTo: aCustomer
 
 	^sales at: aCustomer ifAbsent: [ #() ]! !
 
-!CoffeeShopSalesSystem methodsFor: 'selling' stamp: 'LL 9/22/2020 19:51:19'!
+!CoffeeShopSalesSystem methodsFor: 'selling' stamp: 'AG 11/22/2020 16:05:51'!
 volumeSoldTo: aCustomer
 
-	 ^(self salesMadeTo: aCustomer) sum: [ :aProduct | self volumeOf: aProduct ] ifEmpty: [ 0*milliliter ]! !
+	 ^(self salesMadeTo: aCustomer) sum: [ :aProduct | aProduct volume ] ifEmpty: [ 0*milliliter ]! !
 
 
 !CoffeeShopSalesSystem methodsFor: 'rewarding' stamp: 'LL 9/22/2020 19:53:42'!
@@ -451,7 +508,7 @@ initialize
 
 !classDefinition: #RewardRule category: 'AlgoIII-2020-2C-1Parcial'!
 Object subclass: #RewardRule
-	instanceVariableNames: 'product'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
@@ -461,21 +518,11 @@ createRewardFor: aCustomer
 	
 	self subclassResponsibility ! !
 
-!RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 10:51:26'!
-productQuantity
 
-	self subclassResponsibility ! !
-
-!RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 10:51:33'!
-rewardedProduct
-
-	self subclassResponsibility ! !
-
-
-!RewardRule methodsFor: 'product price' stamp: 'AG 11/22/2020 13:03:30'!
-priceOf: aProduct
-
-	^aProduct price! !
+!RewardRule methodsFor: 'initialization' stamp: 'AG 11/23/2020 09:58:11'!
+initialize
+	
+	^self subclassResponsibility ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -500,33 +547,26 @@ for: volumeSoldToCustomer ifNone: aNoneBlock
 
 !classDefinition: #Combo1RewardRule category: 'AlgoIII-2020-2C-1Parcial'!
 RewardRule subclass: #Combo1RewardRule
-	instanceVariableNames: ''
+	instanceVariableNames: 'rewardedProduct rewardedQuantity'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!Combo1RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 21:41:45'!
+!Combo1RewardRule methodsFor: 'reward creation' stamp: 'AG 11/23/2020 09:56:58'!
 createRewardFor: aCustomer 
 	
 	| price |
 	
-	product := self rewardedProduct.
-	
-	aCustomer type = #Gold ifTrue: [ price := 75*peso ].
-	aCustomer type = #Silver ifTrue: [ price := 83*peso ].
-	aCustomer type = #Normal ifTrue: [ price := 97*peso ].
-	
-	^CoffeeShopReward of: product at: price quantity: self productQuantity! !
+	price := aCustomer rewardPriceForCombo1.
+		
+	^CoffeeShopReward of: rewardedProduct at: price quantity: rewardedQuantity! !
 
-!Combo1RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 19:54:35'!
-productQuantity
-	
-	^2! !
 
-!Combo1RewardRule methodsFor: 'reward creation' stamp: 'AG 11/22/2020 13:07:09'!
-rewardedProduct
+!Combo1RewardRule methodsFor: 'initialization' stamp: 'AG 11/23/2020 09:56:30'!
+initialize
 	
-	^Combo1 new! !
+	rewardedProduct := Combo1 new.
+	rewardedQuantity := 2.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -542,33 +582,26 @@ isFor: volumeSoldToCustomer
 
 !classDefinition: #Combo2RewardRule category: 'AlgoIII-2020-2C-1Parcial'!
 RewardRule subclass: #Combo2RewardRule
-	instanceVariableNames: ''
+	instanceVariableNames: 'rewardedProduct rewardedQuantity'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AlgoIII-2020-2C-1Parcial'!
 
-!Combo2RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 21:41:45'!
+!Combo2RewardRule methodsFor: 'reward creation' stamp: 'AG 11/23/2020 09:57:07'!
 createRewardFor: aCustomer 
 	
 	| price |
 	
-	product := self rewardedProduct.
-	
-	aCustomer type = #Gold ifTrue: [ price := (self priceOf: product)/2 ].
-	aCustomer type = #Silver ifTrue: [ price := (self priceOf: product)*3/4 ].
-	aCustomer type = #Normal ifTrue: [ price := (self priceOf: product)*9/10 ].
-	
-	^CoffeeShopReward of: product at: price quantity: self productQuantity! !
+	price := aCustomer rewardPriceForCombo2: rewardedProduct.
+		
+	^CoffeeShopReward of: rewardedProduct at: price quantity: rewardedQuantity! !
 
-!Combo2RewardRule methodsFor: 'reward creation' stamp: 'LL 9/22/2020 10:23:07'!
-productQuantity
 
-	^1! !
-
-!Combo2RewardRule methodsFor: 'reward creation' stamp: 'AG 11/22/2020 13:07:16'!
-rewardedProduct
+!Combo2RewardRule methodsFor: 'initialization' stamp: 'AG 11/23/2020 09:56:02'!
+initialize
 	
-	^Combo2 new! !
+	rewardedProduct := Combo2 new.
+	rewardedQuantity := 1.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
